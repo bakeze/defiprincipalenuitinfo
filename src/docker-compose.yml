@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  react-app:
+    build: ./react-app
+    ports:
+      - "3000:80" # Expose l'interface React sur le port 3000
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090" # Interface Prometheus sur le port 9090
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
